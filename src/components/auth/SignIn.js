@@ -1,12 +1,17 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { signinUser } from "../../store/actions/authActions";
 
 function SignIn() {
+  const dispatch = useDispatch();
+  const { auth } = useSelector((state) => state);
   const [userDetail, setUserDetail] = useState({
     email: "",
     password: "",
   });
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(signinUser(userDetail));
   };
   return (
     <div className={"container"}>
@@ -34,6 +39,11 @@ function SignIn() {
           <button type={"submit"} className={"btn pink lighten-1 z-depth-0"}>
             {"Login"}
           </button>
+          {auth?.isLoggedIn ? (
+            <div className={"green-text center"}>{auth?.msg}</div>
+          ) : (
+            <div className={"red-text center"}>{auth?.msg}</div>
+          )}
         </div>
       </form>
     </div>
